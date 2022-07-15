@@ -51,19 +51,23 @@ const renderGallery = () => {
        <div>
 		{message}
 		<Router>
-			<Routes>
-				<Route path="/" element={
-					<>
-					<SearchBar handleSearch = {handleSearch} ref={searchInput}/>
-					<Gallery data={data}/>
-					</>
-				}/>
-				<Route path="/album/:id" element ={<AlbumView/>}/>
-				<Route path="/artist/:id" element={<ArtistView/>}/>
-			</Routes>
-		</Router>
-	   </div>
-    )
+        <Route exact path={'/'}>
+          <SearchContext.Provider value={{term: searchInput, handleSearch: handleSearch}}>
+            <SearchBar />
+          </SearchContext.Provider>
+            <DataContext.Provider value={data}>
+              {renderGallery()}
+            </DataContext.Provider>
+        </Route>
+        <Route path="/album/:id">
+          <AlbumView />
+        </Route>
+        <Route path="/artist/:id">
+          <ArtistView />
+        </Route>
+      </Router>
+    </div>
+  );
 }
 
 export default App;
