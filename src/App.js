@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Gallery from './components/Gallery'
 import SearchBar from './components/Searchbar'
@@ -6,6 +6,7 @@ import { DataContext } from './context/DataContext'
 import { SearchContext } from './context/SearchContext'
 import AlbumView from './components/AlbumView'
 import ArtistView from './components/ArtistView'
+import Spinner from './components/Spinner'
 
 function App() {
     let [message, setMessage] = useState('Search for Music!')
@@ -36,7 +37,15 @@ const handleSearch = (e, term) => {
 	e.preventDefault()
 	setSearch(term)
 }
-
+const renderGallery = () => {
+    if(data) {
+      return (
+        <Suspense fallback={<Spinner />}>
+          <Gallery />
+        </Suspense>
+      )
+    }
+  }
     
     return (
        <div>
